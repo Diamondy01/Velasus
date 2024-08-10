@@ -36,11 +36,11 @@ public class Velasus {
         commandManager.register(commandManager.metaBuilder("jump").build(), new JumpCommand(proxyServer));
 
         // Start the Rcon server
-        int rconPort = 25575;
-        String rconPassword = "1234";
+  //      int rconPort = 25575;
+    //    String rconPassword = "1234";
 
-        RconServer rconServer = new RconServer(rconPort, rconPassword, this, logger);
-        new Thread(rconServer::start).start();
+      //  RconServer rconServer = new RconServer(rconPort, rconPassword, this, logger);
+        //new Thread(rconServer::start).start();
     }
 
     public ProxyServer getProxyServer() {
