@@ -52,8 +52,8 @@ public class RconServer {
         }
     }
 
-    public ProxyServer getProxyServer() {
-        return velasus.getProxyServer();
+   public ProxyServer getProxyServer() {
+     return velasus.getProxyServer();
     }
 
     public Logger getLogger() {

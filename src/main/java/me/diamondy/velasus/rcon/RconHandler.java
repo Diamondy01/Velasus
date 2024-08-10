@@ -5,7 +5,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.slf4j.Logger;
-import java.io.IOException;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 
@@ -31,7 +30,7 @@ public class RconHandler extends SimpleChannelInboundHandler<ByteBuf> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf buf) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf buf) {
         buf = buf.order(ByteOrder.LITTLE_ENDIAN);
         if (buf.readableBytes() < 8) {
             return;
@@ -60,7 +59,7 @@ public class RconHandler extends SimpleChannelInboundHandler<ByteBuf> {
         }
     }
 
-    private void handleLogin(ChannelHandlerContext ctx, String payload, int requestId) throws IOException {
+    private void handleLogin(ChannelHandlerContext ctx, String payload, int requestId) {
         if (password.equals(payload)) {
             loggedIn = true;
             sendResponse(ctx, requestId, TYPE_COMMAND, "");
@@ -119,7 +118,7 @@ public class RconHandler extends SimpleChannelInboundHandler<ByteBuf> {
     }
 
     private void sendLargeResponse(ChannelHandlerContext ctx, int requestId, String payload) {
-        if (payload.length() == 0) {
+        if (payload.isEmpty()) {
             sendResponse(ctx, requestId, TYPE_RESPONSE, "");
             return;
         }

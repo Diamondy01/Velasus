@@ -13,18 +13,23 @@ import org.slf4j.Logger;
 
 import java.nio.file.Path;
 
-@Getter
-public class Velasus {
 
+public class Velasus {
+    @Getter
     private final ProxyServer proxyServer;
-    private final Logger logger;
-    private final Path dataDirectory;
+
+    public Velasus(ProxyServer proxyServer) {
+        this.proxyServer = proxyServer;
+    }
+
+    public ProxyServer getProxyServer() {
+        return proxyServer;
+    }
+
 
     @Inject
     public Velasus(ProxyServer proxyServer, Logger logger, @DataDirectory Path dataDirectory) {
         this.proxyServer = proxyServer;
-        this.logger = logger;
-        this.dataDirectory = dataDirectory;
 
         logger.info("Velasus has been enabled!");
 
