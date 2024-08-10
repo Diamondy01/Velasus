@@ -1,8 +1,6 @@
 plugins {
     id("java")
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("se.patrikerdes.use-latest-versions") version "0.2.18"
-    id("com.github.ben-manes.versions") version "0.41.0"
 }
 
 val plugin = "Velasus"
@@ -10,6 +8,7 @@ val author = "Diamondy01"
 val desc = "Proxy Plugin"
 val main = "me.diamondy.velasus.Velasus"
 val version = "1.0"
+val id = "velasus" // Ensure this matches the expected plugin ID format
 
 repositories {
     mavenCentral()
@@ -25,14 +24,13 @@ dependencies {
     compileOnly("net.kyori:adventure-api:4.17.0")
     implementation("org.yaml:snakeyaml:2.0")
     implementation("com.google.guava:guava:33.2.1-jre")
-
 }
 
 tasks {
     named<ProcessResources>("processResources") {
         filesMatching("**/*.properties") {
             expand(
-                "id" to plugin.lowercase(),
+                "id" to id,
                 "name" to plugin,
                 "author" to author,
                 "main" to main,
