@@ -12,10 +12,13 @@ val version = "1.0"
 repositories {
     mavenCentral()
     maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
+    maven { url = uri("https://mvnrepository.com/artifact/io.netty/netty-all") }
 }
 
 dependencies {
     compileOnly("com.velocitypowered:velocity-api:3.3.0-SNAPSHOT")
+    compileOnly("io.netty:netty-all:4.1.24.Final")
+    compileOnly("org.projectlombok:lombok:1.18.20")
 }
 
 tasks {

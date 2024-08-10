@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
+import lombok.Getter;
 import me.diamondy.velasus.commands.JumpCommand;
 import me.diamondy.velasus.commands.PullCommand;
 import me.diamondy.velasus.commands.SendCommand;
@@ -14,12 +15,13 @@ import org.slf4j.Logger;
 import java.nio.file.Path;
 
 public class Velasus {
+    @Getter
     private final ProxyServer proxyServer;
     private final Logger logger;
     private final Path dataDirectory;
 
     @Inject
-    public Velasus(ProxyServer proxyServer, Logger logger, @DataDirectory Path dataDirectory){
+    public Velasus(ProxyServer proxyServer, Logger logger, @DataDirectory Path dataDirectory) {
         this.proxyServer = proxyServer;
         this.logger = logger;
         this.dataDirectory = dataDirectory;
@@ -39,6 +41,18 @@ public class Velasus {
 
         RconServer rconServer = new RconServer(rconPort, rconPassword, this, logger);
         new Thread(rconServer::start).start();
+    }
+
+    public ProxyServer getProxyServer() {
+        return proxyServer;
+    }
+
+    public Logger getLogger() {
+        return logger;
+    }
+
+    public Path getDataDirectory() {
+        return dataDirectory;
     }
 
     public void executeCommand(String command) {

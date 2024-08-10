@@ -2,44 +2,61 @@ package me.diamondy.velasus.rcon;
 
 import me.diamondy.velasus.Velasus;
 import org.slf4j.Logger;
-
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.velocitypowered.api.proxy.ProxyServer;
+import java.net.InetSocketAddress;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class RconServer {
     private final int port;
     private final String password;
     private final Velasus velasus;
     private final Logger logger;
-    private final ExecutorService threadPool;
 
     public RconServer(int port, String password, Velasus velasus, Logger logger) {
         this.port = port;
         this.password = password;
         this.velasus = velasus;
         this.logger = logger;
-        this.threadPool = Executors.newFixedThreadPool(10); // Adjust the pool size as needed
     }
 
     public void start() {
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            logger.info("RconServer started on port " + port);
-            while (true) {
-                try {
-                    Socket clientSocket = serverSocket.accept();
-                    logger.info("Accepted connection from " + clientSocket.getInetAddress());
-                    threadPool.execute(new RconClientHandler(clientSocket, password, velasus, logger));
-                } catch (IOException e) {
-                    logger.error("Error accepting connection", e);
-                }
-            }
-        } catch (IOException e) {
-            logger.error("Error starting RconServer", e);
+        NioEventLoopGroup bossGroup = new NioEventLoopGroup();
+        NioEventLoopGroup workerGroup = new NioEventLoopGroup();
+        try {
+            ServerBootstrap b = new ServerBootstrap();
+            b.group(bossGroup, workerGroup)
+                .channel(NioServerSocketChannel.class)
+                .childHandler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    public void initChannel(SocketChannel ch) throws Exception {
+                        ch.pipeline().addLast(new RconHandler(RconServer.this, password));
+                    }
+                })
+                .option(ChannelOption.SO_BACKLOG, 128)
+                .childOption(ChannelOption.SO_KEEPALIVE, true);
+
+            ChannelFuture f = b.bind(new InetSocketAddress(port)).sync();
+            logger.info("Rcon server started on port " + port);
+            f.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            logger.error("Rcon server interrupted", e);
         } finally {
-            threadPool.shutdown(); // Ensure the thread pool is properly shut down
+            workerGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
         }
+    }
+
+    public ProxyServer getProxyServer() {
+        return velasus.getProxyServer();
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 }
