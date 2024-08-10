@@ -9,13 +9,13 @@ import me.diamondy.velasus.commands.JumpCommand;
 import me.diamondy.velasus.commands.PullCommand;
 import me.diamondy.velasus.commands.SendCommand;
 import me.diamondy.velasus.commands.ServerCMD;
-import me.diamondy.velasus.rcon.RconServer;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
 
+@Getter
 public class Velasus {
-    @Getter
+
     private final ProxyServer proxyServer;
     private final Logger logger;
     private final Path dataDirectory;
@@ -41,18 +41,6 @@ public class Velasus {
 
       //  RconServer rconServer = new RconServer(rconPort, rconPassword, this, logger);
         //new Thread(rconServer::start).start();
-    }
-
-    public ProxyServer getProxyServer() {
-        return proxyServer;
-    }
-
-    public Logger getLogger() {
-        return logger;
-    }
-
-    public Path getDataDirectory() {
-        return dataDirectory;
     }
 
     public void executeCommand(String command) {
