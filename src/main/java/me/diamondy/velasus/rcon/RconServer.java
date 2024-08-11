@@ -18,7 +18,6 @@ public class RconServer {
     private final int port;
     private final String password;
     private final Velasus velasus;
-    @Getter
     private final Logger logger;
 
     public RconServer(int port, String password, Velasus velasus, Logger logger) {
@@ -59,4 +58,7 @@ public class RconServer {
      return velasus.getProxyServer();
     }
 
+    public Logger getLogger() {
+        return null;
+    }
 }
