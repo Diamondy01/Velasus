@@ -14,16 +14,12 @@ import org.slf4j.Logger;
 import java.nio.file.Path;
 
 
+@Getter
 public class Velasus {
-    @Getter
     private final ProxyServer proxyServer;
 
     public Velasus(ProxyServer proxyServer) {
         this.proxyServer = proxyServer;
-    }
-
-    public ProxyServer getProxyServer() {
-        return proxyServer;
     }
 
 

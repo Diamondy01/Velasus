@@ -1,6 +1,8 @@
 package me.diamondy.velasus.rcon;
 
+import lombok.Getter;
 import me.diamondy.velasus.Velasus;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import com.velocitypowered.api.proxy.ProxyServer;
 import java.net.InetSocketAddress;
@@ -16,6 +18,7 @@ public class RconServer {
     private final int port;
     private final String password;
     private final Velasus velasus;
+    @Getter
     private final Logger logger;
 
     public RconServer(int port, String password, Velasus velasus, Logger logger) {
@@ -34,7 +37,7 @@ public class RconServer {
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
-                    public void initChannel(SocketChannel ch) throws Exception {
+                    public void initChannel(@NotNull SocketChannel ch) {
                         ch.pipeline().addLast(new RconHandler(RconServer.this, password));
                     }
                 })
@@ -42,7 +45,7 @@ public class RconServer {
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
 
             ChannelFuture f = b.bind(new InetSocketAddress(port)).sync();
-            logger.info("Rcon server started on port " + port);
+            logger.info("Rcon server started on port {}", port);
             f.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             logger.error("Rcon server interrupted", e);
@@ -56,7 +59,4 @@ public class RconServer {
      return velasus.getProxyServer();
     }
 
-    public Logger getLogger() {
-        return logger;
-    }
 }
