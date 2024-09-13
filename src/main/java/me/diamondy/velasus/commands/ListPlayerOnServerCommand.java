@@ -35,6 +35,5 @@ public class ListPlayerOnServerCommand implements SimpleCommand {
         source.sendMessage(Component.text("Players online: " + sortedServers));
 
 
-
     }
 }

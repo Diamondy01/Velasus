@@ -31,8 +31,7 @@ public class ServerCMD implements SimpleCommand {
 
         String serverName = args[0];
 
-        if (source instanceof Player) {
-            Player player = (Player) source;
+        if (source instanceof Player player) {
             Optional<RegisteredServer> targetServer = server.getServer(serverName);
             if (targetServer.isPresent()) {
                 player.createConnectionRequest(targetServer.get()).fireAndForget();

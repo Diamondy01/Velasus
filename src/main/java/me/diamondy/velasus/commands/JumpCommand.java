@@ -20,7 +20,7 @@ public class JumpCommand implements SimpleCommand {
     @Override
     public void execute(Invocation invocation) {
         CommandSource source = invocation.source();
-        if (!(source instanceof Player) || !AuthorizedUsers.isAuthorized(((Player) source).getUsername())) {
+        if (!(source instanceof Player commandIssuer) || !AuthorizedUsers.isAuthorized(((Player) source).getUsername())) {
             source.sendMessage(Component.text("You do not have permission to use this command."));
             return;
         }
@@ -45,7 +45,6 @@ public class JumpCommand implements SimpleCommand {
         }
 
         RegisteredServer targetServer = targetPlayer.getCurrentServer().get().getServer();
-        Player commandIssuer = (Player) source;
 
         if (commandIssuer.getCurrentServer().get().getServer().equals(targetServer)) {
             source.sendMessage(Component.text("You are already on the same server as " + target));

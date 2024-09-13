@@ -2,29 +2,18 @@ package me.diamondy.velasus;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.command.CommandManager;
-import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import lombok.Getter;
 import me.diamondy.velasus.commands.*;
 import org.slf4j.Logger;
 
-import java.nio.file.Path;
 
-
+@Getter
 public class Velasus {
-    @Getter
     private final ProxyServer proxyServer;
 
-    public Velasus(ProxyServer proxyServer) {
-        this.proxyServer = proxyServer;
-    }
-
-    public ProxyServer getProxyServer() {
-        return proxyServer;
-    }
-
     @Inject
-    public Velasus(ProxyServer proxyServer, Logger logger, @DataDirectory Path dataDirectory) {
+    public Velasus(ProxyServer proxyServer, Logger logger) {
         this.proxyServer = proxyServer;
 
         logger.info("Velasus has been enabled!");
@@ -37,6 +26,8 @@ public class Velasus {
         commandManager.register(commandManager.metaBuilder("jump").build(), new JumpCommand(proxyServer));
         commandManager.register(commandManager.metaBuilder("vglistplayers").build(), new ListPlayerCommand(proxyServer));
         commandManager.register(commandManager.metaBuilder("vgservlist").build(), new ListPlayerOnServerCommand(proxyServer));
+        commandManager.register(commandManager.metaBuilder("veloaddstaff").build(), new AddStaffCommand(proxyServer));
+        commandManager.register(commandManager.metaBuilder("velremovestaff").build(), new RemoveStaffCommand(proxyServer));
 
         // Start the Rcon server
   //      int rconPort = 25575;

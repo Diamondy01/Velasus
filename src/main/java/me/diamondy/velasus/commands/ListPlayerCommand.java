@@ -17,14 +17,11 @@ public class ListPlayerCommand implements SimpleCommand {
     public void execute(Invocation invocation) {
         CommandSource source = invocation.source();
 
-        if (!(source instanceof Player) || !AuthorizedUsers.isAuthorized(((Player) source).getUsername())) {
+        if (!(source instanceof Player player) || !AuthorizedUsers.isAuthorized(((Player) source).getUsername())) {
             source.sendMessage(Component.text("You do not have permission to use this command."));
-            return;
+            return ;
         }
-        if (source instanceof Player) {
-            Player player = (Player) source;
-            player.sendMessage(Component.text("Players online: " + server.getAllPlayers().size()));
-            player.sendMessage(Component.text("Players: " + server.getAllPlayers()));
-        }
+        player.sendMessage(Component.text("Players online: " + server.getAllPlayers().size()));
+        player.sendMessage(Component.text("Players: " + server.getAllPlayers()));
     }
 }

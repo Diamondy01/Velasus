@@ -22,6 +22,7 @@ dependencies {
     compileOnly("io.netty:netty-all:4.1.108.Final")
     compileOnly("org.projectlombok:lombok:1.18.20")
     compileOnly("net.kyori:adventure-api:4.17.0")
+    implementation("com.h2database:h2:2.1.214")
     implementation("org.yaml:snakeyaml:2.0")
     implementation("com.google.guava:guava:33.2.1-jre")
 }
